@@ -1,6 +1,6 @@
 import React from 'react';
 import { SearchResult } from '../types/investment';
-import { ExternalLinkIcon, ClockIcon } from '@heroicons/react/24/outline';
+import { ArrowTopRightOnSquareIcon, ClockIcon } from '@heroicons/react/24/outline';
 
 interface ResultCardProps {
   result: SearchResult;
@@ -47,7 +47,7 @@ export const ResultCard: React.FC<ResultCardProps> = ({
                 {result.title}
               </a>
             </h3>
-            <ExternalLinkIcon className="h-4 w-4 text-gray-400 flex-shrink-0" />
+            <ArrowTopRightOnSquareIcon className="h-4 w-4 text-gray-400 flex-shrink-0" />
           </div>
           
           {result.snippet && (
