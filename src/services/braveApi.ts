@@ -11,6 +11,13 @@ const headers = {
 
 export async function braveNews(query: string, count = 10): Promise<SearchResult[]> {
   try {
+    // Check if API key is available
+    const apiKey = import.meta.env.VITE_BRAVE_API_KEY;
+    if (!apiKey || apiKey === 'demo-key' || apiKey === 'your_brave_api_key_here') {
+      console.log('Using mock data - no valid API key provided');
+      return getMockNewsData(query);
+    }
+
     // In a real app, you'd make this call through your backend to keep API keys secure
     const url = new URL(`${BRAVE_API}/news/search`);
     url.searchParams.set("q", query);
@@ -28,7 +35,7 @@ export async function braveNews(query: string, count = 10): Promise<SearchResult
       published: r.age || r.published,
     }));
   } catch (error) {
-    console.error('Brave News API error:', error);
+    console.log('Brave News API error, using mock data:', error);
     // Return mock data for demo purposes
     return getMockNewsData(query);
   }
@@ -36,6 +43,13 @@ export async function braveNews(query: string, count = 10): Promise<SearchResult
 
 export async function braveWeb(query: string, count = 10): Promise<SearchResult[]> {
   try {
+    // Check if API key is available
+    const apiKey = import.meta.env.VITE_BRAVE_API_KEY;
+    if (!apiKey || apiKey === 'demo-key' || apiKey === 'your_brave_api_key_here') {
+      console.log('Using mock data - no valid API key provided');
+      return getMockWebData(query);
+    }
+
     const url = new URL(`${BRAVE_API}/web/search`);
     url.searchParams.set("q", query);
     url.searchParams.set("count", String(count));
@@ -51,7 +65,7 @@ export async function braveWeb(query: string, count = 10): Promise<SearchResult[
       favicon: r.meta_url?.favicon,
     }));
   } catch (error) {
-    console.error('Brave Web API error:', error);
+    console.log('Brave Web API error, using mock data:', error);
     // Return mock data for demo purposes
     return getMockWebData(query);
   }
