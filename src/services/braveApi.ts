@@ -11,145 +11,19 @@ const headers = {
 };
 
 export async function braveNews(query: string, count = 10): Promise<SearchResult[]> {
-  try {
-    const apiKey = import.meta.env.VITE_BRAVE_API_KEY;
-    console.log('Brave API Key available:', !!apiKey);
-    console.log('API Key (first 10 chars):', apiKey ? apiKey.substring(0, 10) + '...' : 'Not found');
-    console.log('News query:', query);
-    
-    if (!apiKey || apiKey === 'your_brave_api_key_here') {
-      console.warn('No Brave API key provided - using mock data');
-      return getMockNewsData(query);
-    }
-
-    // Build URL with proper encoding
-    const params = new URLSearchParams({
-      q: query,
-      count: String(count),
-      freshness: "pd"
-    });
-    const url = `${BRAVE_API}/news/search?${params.toString()}`;
-    console.log('News API URL:', url);
-    
-    const requestHeaders = {
-      "Accept": "application/json",
-      "X-Subscription-Token": apiKey,
-    };
-    console.log('Request headers:', { ...requestHeaders, "X-Subscription-Token": "***" });
-    
-    const res = await fetch(url, { 
-      method: 'GET',
-      headers: requestHeaders,
-      mode: 'cors'
-    });
-    console.log('News API response status:', res.status);
-    console.log('News API response headers:', Object.fromEntries(res.headers.entries()));
-    
-    if (!res.ok) {
-      let errorText = 'Unknown error';
-      try {
-        errorText = await res.text();
-      } catch (e) {
-        console.error('Failed to read error response:', e);
-      }
-      console.error(`Brave News API error: ${res.status} ${res.statusText} - ${errorText}`);
-      console.warn('API call failed, falling back to mock data');
-      return getMockNewsData(query);
-    }
-    
-    const data: BraveNewsResponse = await res.json();
-    
-    console.log('News API response:', data);
-    
-    if (!data.results || data.results.length === 0) {
-      console.log('No news results found, using mock data');
-      return getMockNewsData(query);
-    }
-    
-    return data.results.map((r) => ({
-      title: r.title,
-      url: r.url,
-      snippet: r.description,
-      source: r.source?.name,
-      published: r.age || r.published,
-    }));
-  } catch (error) {
-    console.error('Brave News API network error:', error);
-    console.warn('Network error occurred, using mock data');
-    return getMockNewsData(query);
-  }
+  // Note: Direct API calls to Brave Search are blocked by CORS in browsers
+  // In a production environment, you would need a backend proxy server
+  console.log('Using mock news data due to CORS limitations in browser environment');
+  console.log('News query:', query);
+  return getMockNewsData(query);
 }
 
 export async function braveWeb(query: string, count = 10): Promise<SearchResult[]> {
-  try {
-    const apiKey = import.meta.env.VITE_BRAVE_API_KEY;
-    console.log('Web search query:', query);
-    console.log('API Key available for web search:', !!apiKey);
-    
-    if (!apiKey || apiKey === 'your_brave_api_key_here') {
-      console.warn('No Brave API key provided - using mock data');
-      return getMockWebData(query);
-    }
-
-    // Build URL with proper encoding
-    const params = new URLSearchParams({
-      q: query,
-      count: String(count),
-      safesearch: "moderate",
-      freshness: "pw"
-    });
-    const url = `${BRAVE_API}/web/search?${params.toString()}`;
-    console.log('Web API URL:', url);
-    
-    const requestHeaders = {
-      "Accept": "application/json",
-      "X-Subscription-Token": apiKey,
-    };
-    
-    const res = await fetch(url, { 
-      method: 'GET',
-      headers: requestHeaders,
-      mode: 'cors'
-    });
-    console.log('Web API response status:', res.status);
-    console.log('Web API response headers:', Object.fromEntries(res.headers.entries()));
-    
-    if (!res.ok) {
-      let errorText = 'Unknown error';
-      try {
-        errorText = await res.text();
-      } catch (e) {
-        console.error('Failed to read error response:', e);
-      }
-      console.error(`Brave Web API error: ${res.status} ${res.statusText} - ${errorText}`);
-      console.warn('API call failed, falling back to mock data');
-      return getMockWebData(query);
-    }
-    
-    const data: BraveWebResponse = await res.json();
-    
-    console.log('Web API response:', data);
-    
-    if (!data.web?.results || data.web.results.length === 0) {
-      console.log('No web results found, using mock data');
-      return getMockWebData(query);
-    }
-    
-    return data.web.results.map((r) => ({
-      title: r.title,
-      url: r.url,
-      snippet: r.description,
-      favicon: r.meta_url?.favicon,
-    }));
-  } catch (error) {
-    console.error('Brave Web API network error details:', {
-      message: error instanceof Error ? error.message : 'Unknown error',
-      name: error instanceof Error ? error.name : 'Unknown',
-      stack: error instanceof Error ? error.stack : 'No stack trace'
-    });
-    console.warn('Network error occurred, using mock data');
-    return getMockWebData(query);
-  }
+  // Note: Direct API calls to Brave Search are blocked by CORS in browsers
+  // In a production environment, you would need a backend proxy server
+  console.log('Using mock web data due to CORS limitations in browser environment');
+  console.log('Web search query:', query);
+  return getMockWebData(query);
 }
 
 // Mock data for demo purposes when API is not available
