@@ -71,7 +71,6 @@ interface FMPProfile {
 export async function getStockQuote(ticker: string): Promise<StockOverview | null> {
   const alphaVantageKey = import.meta.env.VITE_ALPHA_VANTAGE_API_KEY;
   const polygonKey = import.meta.env.VITE_POLYGON_API_KEY;
-  const fmpKey = import.meta.env.VITE_FMP_API_KEY;
 
   // Try Alpha Vantage first (most reliable for basic quotes)
   if (alphaVantageKey && alphaVantageKey !== 'your_alpha_vantage_key_here') {

@@ -3,7 +3,6 @@ import { StockOverview as StockOverviewType } from '../types/investment';
 import { 
   ArrowTrendingUpIcon, 
   ArrowTrendingDownIcon,
-  ChartBarIcon,
   ClockIcon
 } from '@heroicons/react/24/outline';
 

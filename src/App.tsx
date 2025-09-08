@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { SearchInput } from './components/SearchInput';
 import { InvestmentPanel } from './components/InvestmentPanel';
 import { buildInvestmentPanel } from './services/braveApi';
