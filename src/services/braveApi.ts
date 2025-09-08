@@ -13,6 +13,9 @@ const headers = {
 export async function braveNews(query: string, count = 10): Promise<SearchResult[]> {
   try {
     const apiKey = import.meta.env.VITE_BRAVE_API_KEY;
+    console.log('Brave API Key available:', !!apiKey);
+    console.log('News query:', query);
+    
     if (!apiKey || apiKey === 'your_brave_api_key_here') {
       console.warn('No Brave API key provided - using mock data');
       return getMockNewsData(query);
@@ -24,12 +27,16 @@ export async function braveNews(query: string, count = 10): Promise<SearchResult
     url.searchParams.set("freshness", "pd"); // Past day for latest news
     
     const res = await fetch(url, { headers });
+    console.log('News API response status:', res.status);
+    
     if (!res.ok) {
       console.error(`Brave News API error: ${res.status} ${res.statusText}`);
       throw new Error(`News API error ${res.status}`);
     }
     
     const data: BraveNewsResponse = await res.json();
+    
+    console.log('News API response:', data);
     
     if (!data.results || data.results.length === 0) {
       console.log('No news results found, using mock data');
@@ -52,6 +59,8 @@ export async function braveNews(query: string, count = 10): Promise<SearchResult
 export async function braveWeb(query: string, count = 10): Promise<SearchResult[]> {
   try {
     const apiKey = import.meta.env.VITE_BRAVE_API_KEY;
+    console.log('Web search query:', query);
+    
     if (!apiKey || apiKey === 'your_brave_api_key_here') {
       console.warn('No Brave API key provided - using mock data');
       return getMockWebData(query);
@@ -64,12 +73,16 @@ export async function braveWeb(query: string, count = 10): Promise<SearchResult[
     url.searchParams.set("freshness", "pw"); // Past week for web results
     
     const res = await fetch(url, { headers });
+    console.log('Web API response status:', res.status);
+    
     if (!res.ok) {
       console.error(`Brave Web API error: ${res.status} ${res.statusText}`);
       throw new Error(`Web API error ${res.status}`);
     }
     
     const data: BraveWebResponse = await res.json();
+    
+    console.log('Web API response:', data);
     
     if (!data.web?.results || data.web.results.length === 0) {
       console.log('No web results found, using mock data');
@@ -161,6 +174,8 @@ export async function buildInvestmentPanel(
   company: string, 
   irDomain?: string
 ) {
+  console.log('Building investment panel for:', ticker, company);
+  
   // Try to get real stock data first, fallback to mock data
   let stockOverview = await getStockQuote(ticker);
   
