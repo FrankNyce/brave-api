@@ -72,6 +72,9 @@ export const SearchInput: React.FC<SearchInputProps> = ({ onSearch, loading }) =
 
       <div className="mt-6">
         <p className="text-sm text-gray-600 mb-3">Quick examples:</p>
+        <p className="text-xs text-gray-500 mb-3">
+          💡 Add financial API keys to .env for real-time stock data
+        </p>
         <div className="flex flex-wrap gap-2">
           {[
             { ticker: 'AAPL', company: 'Apple Inc.' },

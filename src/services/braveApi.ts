@@ -1,4 +1,5 @@
 import { SearchResult, BraveNewsResponse, BraveWebResponse } from '../types/investment';
+import { getStockQuote, getMarketStatus } from './financialApi';
 
 const BRAVE_API = "https://api.search.brave.com/res/v1";
 
@@ -144,24 +145,27 @@ export async function buildInvestmentPanel(
   company: string, 
   irDomain?: string
 ) {
-  // Generate mock stock overview data
-  const generateStockOverview = () => {
-    const basePrice = 50 + Math.random() * 200; // Random price between 50-250
-    const change = (Math.random() - 0.5) * 10; // Random change between -5 to +5
+  // Try to get real stock data first, fallback to mock data
+  let stockOverview = await getStockQuote(ticker);
+  
+  // If no real data available, generate mock data
+  if (!stockOverview) {
+    const basePrice = 50 + Math.random() * 200;
+    const change = (Math.random() - 0.5) * 10;
     const changePercent = (change / basePrice) * 100;
     
-    return {
+    stockOverview = {
       currentPrice: basePrice,
       priceChange: change,
       priceChangePercent: changePercent,
-      marketStatus: 'Market Open',
+      marketStatus: await getMarketStatus(),
       lastUpdated: new Date().toLocaleString('en-US', {
         month: 'long',
         day: 'numeric',
         hour: '2-digit',
         minute: '2-digit',
         hour12: true
-      }) + ' EDT',
+      }) + ' EST',
       dayHigh: basePrice + Math.random() * 5,
       dayLow: basePrice - Math.random() * 5,
       volume: (Math.random() * 10 + 1).toFixed(2) + 'M',
@@ -203,7 +207,7 @@ export async function buildInvestmentPanel(
         }
       ]
     };
-  };
+  }
 
   // 1) Latest News
   const newsQ = `${company} stock OR ${ticker} site:bloomberg.com OR site:cnbc.com OR site:reuters.com`;
@@ -241,7 +245,7 @@ export async function buildInvestmentPanel(
     ticker,
     company,
     lastUpdated: new Date().toISOString(),
-    stockOverview: generateStockOverview(),
+    stockOverview,
     latestNews: dedupe(latestNews),
     filings: dedupe(filings),
     investorRelations: dedupe(investorRelations),

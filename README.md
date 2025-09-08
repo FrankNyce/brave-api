@@ -30,6 +30,10 @@ A comprehensive React application demonstrating how to build search-enabled fina
 ### Prerequisites
 - Node.js 18+ and npm
 - Brave Search API key (get one at [brave.com/search/api](https://brave.com/search/api/))
+- Optional: Financial data API keys for real-time stock data:
+  - [Alpha Vantage](https://www.alphavantage.co/support/#api-key) (free tier: 5 calls/minute, 500 calls/day)
+  - [Polygon.io](https://polygon.io/) (free tier: 5 calls/minute)
+  - [Financial Modeling Prep](https://financialmodelingprep.com/) (free tier: 250 calls/day)
 
 ### Installation
 
@@ -41,7 +45,11 @@ npm install
 2. Set up your API key:
 ```bash
 cp .env.example .env
-# Edit .env and add your Brave API key
+# Edit .env and add your API keys:
+# - VITE_BRAVE_API_KEY (required for news/filings)
+# - VITE_ALPHA_VANTAGE_API_KEY (optional, for real-time stock data)
+# - VITE_POLYGON_API_KEY (optional, for real-time stock data)
+# - VITE_FMP_API_KEY (optional, for real-time stock data)
 ```
 
 3. Start the development server:
