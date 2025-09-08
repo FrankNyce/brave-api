@@ -26,12 +26,18 @@ export async function braveNews(query: string, count = 10): Promise<SearchResult
     url.searchParams.set("count", String(count));
     url.searchParams.set("freshness", "pd"); // Past day for latest news
     
-    const res = await fetch(url, { headers });
+    const res = await fetch(url, { 
+      headers,
+      mode: 'cors',
+      credentials: 'omit'
+    });
     console.log('News API response status:', res.status);
     
     if (!res.ok) {
-      console.error(`Brave News API error: ${res.status} ${res.statusText}`);
-      throw new Error(`News API error ${res.status}`);
+      const errorText = await res.text().catch(() => 'Unknown error');
+      console.error(`Brave News API error: ${res.status} ${res.statusText} - ${errorText}`);
+      console.warn('API call failed, falling back to mock data');
+      return getMockNewsData(query);
     }
     
     const data: BraveNewsResponse = await res.json();
@@ -51,7 +57,8 @@ export async function braveNews(query: string, count = 10): Promise<SearchResult
       published: r.age || r.published,
     }));
   } catch (error) {
-    console.error('Brave News API error:', error);
+    console.error('Brave News API network error:', error);
+    console.warn('Network error occurred, using mock data');
     return getMockNewsData(query);
   }
 }
@@ -72,12 +79,18 @@ export async function braveWeb(query: string, count = 10): Promise<SearchResult[
     url.searchParams.set("safesearch", "moderate");
     url.searchParams.set("freshness", "pw"); // Past week for web results
     
-    const res = await fetch(url, { headers });
+    const res = await fetch(url, { 
+      headers,
+      mode: 'cors',
+      credentials: 'omit'
+    });
     console.log('Web API response status:', res.status);
     
     if (!res.ok) {
-      console.error(`Brave Web API error: ${res.status} ${res.statusText}`);
-      throw new Error(`Web API error ${res.status}`);
+      const errorText = await res.text().catch(() => 'Unknown error');
+      console.error(`Brave Web API error: ${res.status} ${res.statusText} - ${errorText}`);
+      console.warn('API call failed, falling back to mock data');
+      return getMockWebData(query);
     }
     
     const data: BraveWebResponse = await res.json();
@@ -96,7 +109,8 @@ export async function braveWeb(query: string, count = 10): Promise<SearchResult[
       favicon: r.meta_url?.favicon,
     }));
   } catch (error) {
-    console.error('Brave Web API error:', error);
+    console.error('Brave Web API network error:', error);
+    console.warn('Network error occurred, using mock data');
     return getMockWebData(query);
   }
 }
