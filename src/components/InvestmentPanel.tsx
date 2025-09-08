@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { InvestmentPanel as InvestmentPanelType } from '../types/investment';
 import { ResultCard } from './ResultCard';
+import { StockOverview } from './StockOverview';
 import { 
   NewspaperIcon, 
   DocumentTextIcon, 
@@ -156,6 +157,17 @@ export const InvestmentPanel: React.FC<InvestmentPanelProps> = ({
 
   return (
     <div className="card">
+      {/* Stock Overview Section */}
+      {data.stockOverview && (
+        <div className="mb-8 -m-6">
+          <StockOverview 
+            data={data.stockOverview} 
+            ticker={data.ticker}
+            company={data.company}
+          />
+        </div>
+      )}
+
       {/* Header */}
       <div className="flex items-center justify-between mb-6">
         <div>
