@@ -246,5 +246,3 @@ export const StockOverview: React.FC<StockOverviewProps> = ({ data, ticker, comp
     </div>
   );
 };
-
-export { StockOverview }
