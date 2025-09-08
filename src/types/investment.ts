@@ -12,10 +12,38 @@ export interface InvestmentPanel {
   ticker: string;
   company: string;
   lastUpdated: string;
+  stockOverview?: StockOverview;
   latestNews: SearchResult[];
   filings: SearchResult[];
   investorRelations: SearchResult[];
   riskSignals: SearchResult[];
+}
+
+export interface StockOverview {
+  currentPrice: number;
+  priceChange: number;
+  priceChangePercent: number;
+  marketStatus: string;
+  lastUpdated: string;
+  dayHigh: number;
+  dayLow: number;
+  volume: string;
+  marketCap: string;
+  peRatio: number;
+  analystRating: {
+    rating: 'Strong Buy' | 'Buy' | 'Hold' | 'Sell' | 'Strong Sell';
+    score: number;
+    analystCount: number;
+  };
+  relatedStocks: RelatedStock[];
+}
+
+export interface RelatedStock {
+  ticker: string;
+  company: string;
+  price: number;
+  change: number;
+  changePercent: number;
 }
 
 export interface SearchFilters {
