@@ -12,23 +12,31 @@ const headers = {
 
 export async function braveNews(query: string, count = 10): Promise<SearchResult[]> {
   try {
-    // Check if API key is available
     const apiKey = import.meta.env.VITE_BRAVE_API_KEY;
-    if (!apiKey || apiKey === 'demo-key' || apiKey === 'your_brave_api_key_here') {
-      console.log('Using mock data - no valid API key provided');
+    if (!apiKey || apiKey === 'your_brave_api_key_here') {
+      console.warn('No Brave API key provided - using mock data');
       return getMockNewsData(query);
     }
 
-    // In a real app, you'd make this call through your backend to keep API keys secure
     const url = new URL(`${BRAVE_API}/news/search`);
     url.searchParams.set("q", query);
     url.searchParams.set("count", String(count));
+    url.searchParams.set("freshness", "pd"); // Past day for latest news
     
     const res = await fetch(url, { headers });
-    if (!res.ok) throw new Error(`News error ${res.status}`);
+    if (!res.ok) {
+      console.error(`Brave News API error: ${res.status} ${res.statusText}`);
+      throw new Error(`News API error ${res.status}`);
+    }
     
     const data: BraveNewsResponse = await res.json();
-    return (data.results || []).map((r) => ({
+    
+    if (!data.results || data.results.length === 0) {
+      console.log('No news results found, using mock data');
+      return getMockNewsData(query);
+    }
+    
+    return data.results.map((r) => ({
       title: r.title,
       url: r.url,
       snippet: r.description,
@@ -36,38 +44,46 @@ export async function braveNews(query: string, count = 10): Promise<SearchResult
       published: r.age || r.published,
     }));
   } catch (error) {
-    console.log('Brave News API error, using mock data:', error);
-    // Return mock data for demo purposes
+    console.error('Brave News API error:', error);
     return getMockNewsData(query);
   }
 }
 
 export async function braveWeb(query: string, count = 10): Promise<SearchResult[]> {
   try {
-    // Check if API key is available
     const apiKey = import.meta.env.VITE_BRAVE_API_KEY;
-    if (!apiKey || apiKey === 'demo-key' || apiKey === 'your_brave_api_key_here') {
-      console.log('Using mock data - no valid API key provided');
+    if (!apiKey || apiKey === 'your_brave_api_key_here') {
+      console.warn('No Brave API key provided - using mock data');
       return getMockWebData(query);
     }
 
     const url = new URL(`${BRAVE_API}/web/search`);
     url.searchParams.set("q", query);
     url.searchParams.set("count", String(count));
+    url.searchParams.set("safesearch", "moderate");
+    url.searchParams.set("freshness", "pw"); // Past week for web results
     
     const res = await fetch(url, { headers });
-    if (!res.ok) throw new Error(`Web error ${res.status}`);
+    if (!res.ok) {
+      console.error(`Brave Web API error: ${res.status} ${res.statusText}`);
+      throw new Error(`Web API error ${res.status}`);
+    }
     
     const data: BraveWebResponse = await res.json();
-    return (data.web?.results || []).map((r) => ({
+    
+    if (!data.web?.results || data.web.results.length === 0) {
+      console.log('No web results found, using mock data');
+      return getMockWebData(query);
+    }
+    
+    return data.web.results.map((r) => ({
       title: r.title,
       url: r.url,
       snippet: r.description,
       favicon: r.meta_url?.favicon,
     }));
   } catch (error) {
-    console.log('Brave Web API error, using mock data:', error);
-    // Return mock data for demo purposes
+    console.error('Brave Web API error:', error);
     return getMockWebData(query);
   }
 }

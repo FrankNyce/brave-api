@@ -72,9 +72,10 @@ export const SearchInput: React.FC<SearchInputProps> = ({ onSearch, loading }) =
 
       <div className="mt-6">
         <p className="text-sm text-gray-600 mb-3">Quick examples:</p>
-        <p className="text-xs text-gray-500 mb-3">
-          💡 Add financial API keys to .env for real-time stock data
-        </p>
+        <div className="text-xs text-gray-500 mb-3 space-y-1">
+          <p>💡 Add your Brave Search API key to .env for real-time news and filings</p>
+          <p>📊 Add financial API keys for live stock data (Alpha Vantage, Polygon, FMP)</p>
+        </div>
         <div className="flex flex-wrap gap-2">
           {[
             { ticker: 'AAPL', company: 'Apple Inc.' },

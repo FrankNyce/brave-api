@@ -29,7 +29,7 @@ A comprehensive React application demonstrating how to build search-enabled fina
 
 ### Prerequisites
 - Node.js 18+ and npm
-- Brave Search API key (get one at [brave.com/search/api](https://brave.com/search/api/))
+- **Brave Search API key** (get one at [brave.com/search/api](https://brave.com/search/api/)) - **Required for real-time data**
 - Optional: Financial data API keys for real-time stock data:
   - [Alpha Vantage](https://www.alphavantage.co/support/#api-key) (free tier: 5 calls/minute, 500 calls/day)
   - [Polygon.io](https://polygon.io/) (free tier: 5 calls/minute)
