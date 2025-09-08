@@ -2,7 +2,7 @@ import React from 'react';
 import { StockOverview as StockOverviewType } from '../types/investment';
 import { 
   TrendingUpIcon, 
-  TrendingDownIcon,
+  ArrowTrendingDownIcon,
   ChartBarIcon,
   ClockIcon
 } from '@heroicons/react/24/outline';
@@ -59,7 +59,7 @@ export const StockOverview: React.FC<StockOverviewProps> = ({ data, ticker, comp
                 {isPositive ? (
                   <TrendingUpIcon className="h-4 w-4" />
                 ) : (
-                  <TrendingDownIcon className="h-4 w-4" />
+                  <ArrowTrendingDownIcon className="h-4 w-4" />
                 )}
                 <span className="font-medium">
                   {isPositive ? '+' : ''}{data.priceChange.toFixed(2)} ({isPositive ? '+' : ''}{data.priceChangePercent.toFixed(2)}%)
@@ -215,7 +215,7 @@ export const StockOverview: React.FC<StockOverviewProps> = ({ data, ticker, comp
                     {stock.change >= 0 ? (
                       <TrendingUpIcon className="h-3 w-3" />
                     ) : (
-                      <TrendingDownIcon className="h-3 w-3" />
+                      <ArrowTrendingDownIcon className="h-3 w-3" />
                     )}
                     <span>{stock.change >= 0 ? '+' : ''}{stock.change.toFixed(2)} ({stock.change >= 0 ? '+' : ''}{stock.changePercent.toFixed(2)}%)</span>
                   </div>
