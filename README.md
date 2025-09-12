@@ -40,19 +40,30 @@ A comprehensive React application demonstrating how to build search-enabled fina
 1. Clone and install dependencies:
 ```bash
 npm install
+cd server && npm install && cd ..
 ```
 
 2. Set up your API key:
 ```bash
 cp .env.example .env
+cp server/.env.example server/.env
 # Edit .env and add your API keys:
 # - VITE_BRAVE_API_KEY (required for news/filings)
 # - VITE_ALPHA_VANTAGE_API_KEY (optional, for real-time stock data)
 # - VITE_POLYGON_API_KEY (optional, for real-time stock data)
 # - VITE_FMP_API_KEY (optional, for real-time stock data)
+
+# Edit server/.env and add your Brave API key:
+# - BRAVE_API_KEY (required for backend API proxy)
 ```
 
-3. Start the development server:
+3. Start the backend server (in one terminal):
+```bash
+cd server
+npm run dev
+```
+
+4. Start the frontend development server (in another terminal):
 ```bash
 npm run dev
 ```
